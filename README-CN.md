@@ -52,37 +52,11 @@ OpenAI 翻译器目前还处于早期开发阶段，我正在积极地添加更�
 
 ### 使用示例
 
-您可以通过指定配置文件或提供命令行参数来使用 OpenAI-翻译器。
-
-#### 使用配置文件
-
-根据您的设置调整 `config.yaml` 文件：
-
-```yaml
-OpenAIModel:
-  model: "gpt-3.5-turbo"
-  api_key: "your_openai_api_key"
-
-GLMModel:
-  model_url: "your_chatglm_model_url"
-  timeout: 300
-
-common:
-  book: "test/test.pdf"
-  file_format: "markdown"
-```
-
-然后命令行直接运行：
-
-```bash
-python ai_translator/main.py
-```
+您可以通过命令行来使用OpenAI-翻译器，并且通过浏览器进行交互。
 
 ![sample_out](images/sample_image_1.png)
 
-#### 使用命令行参数
-
-您也可以直接在命令行上指定设置。这是使用 OpenAI 模型的例子：
+#### 使用命令行
 
 ```bash
 # 将您的 api_key 设置为环境变量
@@ -90,10 +64,12 @@ export OPENAI_API_KEY="sk-xxx"
 python ai_translator//http_server.py
 ```
 
+#### 使用浏览器
+
+```
+http://localhost:8000
+```
+
 ## 许可证
 
 该项目采用 GPL-3.0 许可证。有关详细信息，请查看 [LICENSE](LICENSE) 文件。
-
-
-
-

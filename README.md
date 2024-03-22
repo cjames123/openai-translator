@@ -53,42 +53,22 @@ The OpenAI Translator is still in its early stages of development, and I'm activ
 
 ### Usage
 
-You can use OpenAI-Translator either by specifying a configuration file or by providing command-line arguments.
-
-#### Using a configuration file:
-
-Adapt `config.yaml` file with your settings:
-
-```yaml
-OpenAIModel:
-  model: "gpt-3.5-turbo"
-  api_key: "your_openai_api_key"
-
-GLMModel:
-  model_url: "your_chatglm_model_url"
-  timeout: 300
-
-common:
-  book: "test/test.pdf"
-  file_format: "markdown"
-```
-
-Then run the tool:
-
-```bash
-python ai_translator/main.py
-```
+You can start up OpenAI-Translator by providing command-line and use it by browser.
 
 ![sample_out](images/sample_image_1.png)
 
-#### Using command-line arguments:
-
-You can also specify the settings directly on the command line. Here's an example of how to use the OpenAI model:
+#### Using command-line
 
 ```bash
 # Set your api_key as an env variable
 export OPENAI_API_KEY="sk-xxx"
 python ai_translator/http_server.py
+```
+
+#### Using browser
+
+```
+http://localhost:8000
 ```
 
 ## License
