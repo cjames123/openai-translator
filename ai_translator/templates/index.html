@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Translation</title>
+    <script>
+        function submitForm() {
+            let book = document.querySelector('#book');
+            // 检查文件是否为空
+            if (book.files.length === 0) {
+                alert('请选择文件！');
+                return;
+            }
+
+            // 获取表单元素
+            let formData = new FormData(document.querySelector('#form'));
+
+            // 发送POST请求到后端服务
+            fetch('/translate', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                // 处理响应数据
+                console.log(data);
+                // 显示提示信息
+                let info = document.querySelector('#info');
+                info.innerHTML = data.message;
+            })
+            .catch(error => {
+                // 显示错误信息
+                console.error('Error:', error);
+                // 显示错误信息
+                let info = document.querySelector('#info');
+                info.innerHTML = error.message;
+            });
+        }
+    </script>
+</head>
+<body>
+    <h1>支持将英文翻译成中文或者法文</h1>
+    <form id="form">
+        <table>
+            <tr>
+                <td>
+                    <label for="ai_model_type">模型类型:</label>
+                </td>
+                <td>
+                    <select id="ai_model_type" name="ai_model_type">
+                        <option value="OpenAIModel">OpenAIModel</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label for="ai_model_version">模型版本:</label>
+                </td>
+                <td>
+                    <select id="ai_model_version" name="ai_model_version">
+                        <option value="gpt-3.5-turbo">gpt-3.5-turbo</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label for="target_language">目标语言:</label>
+                </td>
+                <td>
+                    <select id="target_language" name="target_language">
+                        <option value="Chinese">中文</option>
+                        <option value="French">法文</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label for="file_format">目标文件格式:</label>
+                </td>
+                <td>
+                    <select id="file_format" name="file_format">
+                        <option value="pdf">pdf</option>
+                        <option value="markdown">markdown</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label for="book">文件上传（不超过10MB的PDF文件）:</label>
+                </td>
+                <td>
+                    <input type="file" id="book" name="book" accept="application/pdf">
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label for="pages">翻译页数:</label>
+                </td>
+                <td>
+                    <input type="text" id="pages" name="pages" value="0">
+                </td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>
+                    <button type="button" onclick="submitForm()">翻译</button>
+                </td>
+            </tr>
+        </table>
+    </form>
+    <p id="info" style="font-size: larger"></p>
+    <script>
+        // 为文件上传控件添加大小限制
+        document.querySelector('#book').addEventListener('change', function(e) {
+            let file = e.target.files[0];
+            if (file.name.lastIndexOf('.pdf') === -1) {
+                alert('文件格式必须为pdf！');
+                e.target.value = ''; // 清空文件输入
+            }
+            if (file && file.size > 10 * 1024 * 1024) { // 10MB
+                alert('文件大小不能超过10MB！');
+                e.target.value = ''; // 清空文件输入
+            }
+        });
+    </script>
+</body>
+</html>
