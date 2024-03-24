@@ -38,8 +38,19 @@
             });
         }
     </script>
+    <style>
+        html, body {
+            height: 100%;
+            margin: 0;
+        }
+        .container {
+            display: grid;
+            justify-items: center;
+        }
+    </style>
 </head>
 <body>
+    <div class="container">
     <h1>支持将英文翻译成中文或者法文</h1>
     <form id="form">
         <table>
@@ -110,6 +121,7 @@
         </table>
     </form>
     <p id="info" style="font-size: larger"></p>
+    </div>
     <script>
         // 为文件上传控件添加大小限制
         document.querySelector('#book').addEventListener('change', function(e) {
