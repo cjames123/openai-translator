@@ -51,10 +51,10 @@ def translate(pages: int = Form('pages'), ai_model_type: str = Form('ai_model_ty
     translator.translate_pdf(pdf_file_path=save_file_path, file_format=file_format, pages=pages if pages > 0 else None,
                              target_language=target_language if target_language else 'Chinese')
 
-    new_file_path = new_file_path.strip('.pdf') + '_translated' + ('.pdf' if file_format == 'pdf' else '.md')
+    show_file_path = new_file_path.strip('.pdf') + '_translated' + ('.pdf' if file_format == 'pdf' else '.md')
     return JSONResponse({"status": "success",
                          "message": '翻译完成！<a target="_blank" href="http://localhost:8000/download/'
-                                    + new_file_path + '">请查阅</a>'},
+                                    + show_file_path + '">请查阅</a>'},
                         status_code=status.HTTP_200_OK)
 
 

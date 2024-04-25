@@ -1,17 +1,14 @@
-import requests
-import simplejson
 import time
-import os
 import openai
 
 from model import Model
 from utils import LOG
 from openai import OpenAI
 
+
 class OpenAIModel(Model):
     def __init__(self, model: str, api_key: str):
         self.model = model
-        #self.client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
         self.client = OpenAI(api_key=api_key)
 
     def make_request(self, prompt):

@@ -10,3 +10,6 @@ openai
 fastapi
 uvicorn
 python-multipart
+langchain
+langchain-openai
+gradio

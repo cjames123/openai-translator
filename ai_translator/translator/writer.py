@@ -4,17 +4,18 @@ from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
 from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.ttfonts import TTFont
 from reportlab.platypus import (
-    SimpleDocTemplate, Paragraph, Spacer, Table, TableStyle, PageBreak
+    SimpleDocTemplate, Paragraph, Spacer, Table, TableStyle, PageBreak, Image
 )
 
 from book import Book, ContentType
 from utils import LOG
 
+
 class Writer:
     def __init__(self):
         pass
 
-    def save_translated_book(self, book: Book, output_file_path: str = None, file_format: str = "PDF"):
+    def save_translated_book(self, book: Book, output_file_path: str = None, file_format: str = "pdf"):
         if file_format.lower() == "pdf":
             self._save_translated_book_pdf(book, output_file_path)
         elif file_format.lower() == "markdown":
@@ -38,7 +39,7 @@ class Writer:
 
         # Create a PDF document
         doc = SimpleDocTemplate(output_file_path, pagesize=pagesizes.letter)
-        styles = getSampleStyleSheet()
+        #styles = getSampleStyleSheet()
         story = []
 
         # Iterate over the pages and contents
@@ -50,7 +51,6 @@ class Writer:
                         text = content.translation
                         para = Paragraph(text, simsun_style)
                         story.append(para)
-
                     elif content.content_type == ContentType.TABLE:
                         # Add table to the PDF
                         table = content.translation
@@ -68,6 +68,12 @@ class Writer:
                         pdf_table = Table(table.values.tolist())
                         pdf_table.setStyle(table_style)
                         story.append(pdf_table)
+                    elif content.content_type == ContentType.IMAGE:
+                        for image in content.translation:
+                            pass
+                            #pdf_image = Image(image)
+                            #story.append(pdf_image)
+
             # Add a page break after each page except the last one
             if page != book.pages[-1]:
                 story.append(PageBreak())

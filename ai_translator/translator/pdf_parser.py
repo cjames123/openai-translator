@@ -1,6 +1,6 @@
 import pdfplumber
 from typing import Optional
-from book import Book, Page, Content, ContentType, TableContent
+from book import Book, Page, Content, ContentType, TableContent, ImageContent
 from .exceptions import PageOutOfRangeException
 from utils import LOG
 
@@ -25,8 +25,9 @@ class PDFParser:
                 page = Page()
 
                 # Store the original text content
-                raw_text = pdf_page.extract_text()  #获得原始的文本
-                tables = pdf_page.extract_tables()  #获得原始的表格
+                raw_text = pdf_page.extract_text()  #抽取原始的文本
+                tables = pdf_page.extract_tables()  #抽取原始的表格
+                images = pdf_page.images            #抽取原始的图片
                 LOG.debug(f"[raw_text]\n{raw_text}")
 
                 # Remove each cell's content from the original text
@@ -52,6 +53,17 @@ class PDFParser:
                     page.add_content(table)
                     LOG.debug(f"[table]\n{table}")
 
+                # Handling images
+                """
+                if images:
+                    for image in images:
+                        pdf_stream = image['stream']
+                        raw_data = pdf_stream['rawdata']
+                        LOG.debug(f"[image]\n{pdf_stream}")
+                        LOG.debug(f"[image_data]\n{raw_data}")
+                    image_content = ImageContent(images)
+                    page.add_content(image_content)
+                """
                 book.add_page(page)
 
         return book

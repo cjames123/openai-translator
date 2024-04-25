@@ -38,7 +38,7 @@ class TableContent(Content):
         df = pd.DataFrame(data)
 
         # Verify if the number of rows and columns in the data and DataFrame object match
-        if len(data) != len(df) or len(data[0]) != len(df.columns): #这里有歧义，应该是比较表的数量和每张表行的数量？
+        if len(data) != len(df) or len(data[0]) != len(df.columns):
             raise ValueError(
                 "The number of rows and columns in the extracted table data and DataFrame object do not match.")
 
@@ -77,3 +77,9 @@ class TableContent(Content):
 
     def get_original_as_str(self):
         return self.original.to_string(header=False, index=False)
+
+
+class ImageContent(Content):
+    def __init__(self, original):
+        super().__init__(self, ContentType.IMAGE, original)
+
