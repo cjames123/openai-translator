@@ -6,7 +6,7 @@ def make_text_prompt(text: str, source_language: str, target_language: str) -> s
         target_language = "中文"
     elif target_language == "French":
         target_language = "法语"
-    return f"从{source_language}翻译为{target_language}，每个句子，每个词都要翻译，尽量使语义简单易懂：{text}"
+    return f"将{source_language}翻译为{target_language}，每个句子，每个词都要翻译，尽量使语义简单易懂：{text}"
 
 
 def make_table_prompt(table: str, source_language: str, target_language: str) -> str:
@@ -14,7 +14,7 @@ def make_table_prompt(table: str, source_language: str, target_language: str) ->
         target_language = "中文"
     elif target_language == "French":
         target_language = "法语"
-    return f"从{source_language}翻译为{target_language}，保持间距（空格，分隔符），以表格形式返回，单元格的文本都要翻译，数值除外：\n{table}"
+    return f"将{source_language}翻译为{target_language}，保持间距（空格，分隔符），以表格形式返回，单元格的文本都要翻译，数值除外：\n{table}"
 
 
 def translate_prompt(content, source_language:str, target_language: str) -> str:

@@ -38,7 +38,7 @@ def translate(pages: int = Form('pages'), ai_model_type: str = Form('ai_model_ty
     config = config_loader.load_config()
 
     model_api_key = model_api_key if model_api_key else config[ai_model_type]['api_key']
-    model = OpenAIModel(model=ai_model_version, api_key=model_api_key)
+    # model = OpenAIModel(model=ai_model_version, api_key=model_api_key)
 
     book.filename = book.filename.lower()
     new_file_path = book.filename.strip('.pdf') + '_' + time.strftime("%Y%m%d-%H%M%S") + '.pdf'
@@ -47,7 +47,7 @@ def translate(pages: int = Form('pages'), ai_model_type: str = Form('ai_model_ty
         f.write(book.file.read())
 
     # 实例化 PDFTranslator 类，并调用 translate_pdf() 方法
-    translator = PDFTranslator(model)
+    translator = PDFTranslator(ai_model_version)
     translator.translate_pdf(pdf_file_path=save_file_path, file_format=file_format, pages=pages if pages > 0 else None,
                              target_language=target_language if target_language else 'Chinese')
 

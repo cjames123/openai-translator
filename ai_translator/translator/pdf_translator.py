@@ -8,9 +8,9 @@ from .translation_chain import TranslationChain
 
 
 class PDFTranslator:
-    def __init__(self, model: Model):
-        self.model = model
-        self.chain = TranslationChain() #TODO
+    def __init__(self, model_name: str):
+        # self.model = model
+        self.chain = TranslationChain(model_name)
         self.pdf_parser = PDFParser()
         self.writer = Writer()
 
@@ -24,9 +24,9 @@ class PDFTranslator:
                 prompt = translate_prompt(content, source_language, target_language)
                 LOG.debug(prompt)
                 # translation, status = self.model.make_request(prompt)
-                translation, status = self.chain.run(text=prompt, source_language=source_language, target_language=target_language)
+                translation, status = self.chain.invoke(text=prompt, source_language=source_language,
+                                                        target_language=target_language)
                 LOG.info("\n"+translation)
-
                 # Update the content in self.book.pages directly
                 self.book.pages[page_idx].contents[content_idx].set_translation(translation, status)
 

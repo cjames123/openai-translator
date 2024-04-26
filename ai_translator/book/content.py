@@ -50,10 +50,15 @@ class TableContent(Content):
                 raise ValueError(f"Invalid translation type. Expected str, but got {type(translation)}")
 
             # Convert the string to a list of lists
-            table_data = [row.strip('|').strip().split('|') for row in translation.split('\n')]
-            LOG.debug(table_data)
-            # Create a DataFrame from the table_data
-            translated_df = pd.DataFrame(data=table_data[2:], columns=table_data[0])
+            if translation.find('|') < 0:
+                table_data = [row.strip('[').strip(']').split(',') for row in translation.split("] [")]
+                LOG.debug(table_data)
+                # Create a DataFrame from the table_data
+                translated_df = pd.DataFrame(data=table_data[1:], columns=table_data[0])
+            else:
+                table_data = [row.strip('|').strip().split('|') for row in translation.split('\n')]
+                LOG.debug(table_data)
+                translated_df = pd.DataFrame(data=table_data[2:], columns=table_data[0])
             LOG.debug(translated_df)
             self.translation = translated_df
             self.status = status

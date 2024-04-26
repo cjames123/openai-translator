@@ -9,6 +9,7 @@ from reportlab.platypus import (
 
 from book import Book, ContentType
 from utils import LOG
+import numpy as np
 
 
 class Writer:
@@ -65,7 +66,7 @@ class Writer:
                             ('FONTNAME', (0, 1), (-1, -1), 'SimSun'),  # 更改表格中的字体为 "SimSun"
                             ('GRID', (0, 0), (-1, -1), 1, colors.black)
                         ])
-                        pdf_table = Table(table.values.tolist())
+                        pdf_table = Table(np.append([table.columns.values], table.values, axis=0).tolist())
                         pdf_table.setStyle(table_style)
                         story.append(pdf_table)
                     elif content.content_type == ContentType.IMAGE:

@@ -1,11 +1,13 @@
+from langchain_core.language_models import BaseChatModel
 from langchain_openai import ChatOpenAI
+from langchain_community.chat_models import ChatZhipuAI
 from langchain.chains import LLMChain
 from langchain.prompts.chat import (
     ChatPromptTemplate,
     SystemMessagePromptTemplate,
     HumanMessagePromptTemplate,
 )
-
+from typing import Any, Dict
 from utils import LOG
 
 
@@ -14,8 +16,7 @@ class TranslationChain:
         
         # 翻译任务指令始终由 System 角色承担
         template = (
-            """你是语言专家, 精通各种语言. \n
-            将 {source_language} 翻译为 {target_language}."""
+            "你是语言专家, 精通各种语言. 将 {source_language} 翻译为 {target_language}."
         )
         system_message_prompt = SystemMessagePromptTemplate.from_template(template)
 
@@ -29,17 +30,21 @@ class TranslationChain:
         )
 
         # 为了翻译结果的稳定性，将 temperature 设置为 0
-        chat = ChatOpenAI(model_name=model_name, temperature=0, verbose=verbose)
+        chat_model: BaseChatModel
+        if model_name == 'gpt-3.5-turbo':
+            chat_model = ChatOpenAI(temperature=0, verbose=verbose)   #default gpt-3.5-turbo
+        else:
+            chat_model = ChatZhipuAI()    #default glm-4, get ZHIPUAI_API_KEY from env
 
-        self.chain = LLMChain(llm=chat, prompt=chat_prompt_template, verbose=verbose)
+        self.chain = LLMChain(llm=chat_model, prompt=chat_prompt_template, verbose=verbose)
 
-    def run(self, text: str, source_language: str, target_language: str) -> (str, bool):
+    def invoke(self, text: str, source_language: str, target_language: str) -> (str, bool):
         if target_language == "Chinese":
             target_language = "中文"
         elif target_language == "French":
             target_language = "法语"
 
-        result = ""
+        result: Dict[str, Any]
         try:
             result = self.chain.invoke({
                 "text": text,
@@ -48,6 +53,6 @@ class TranslationChain:
             })
         except Exception as e:
             LOG.error(f"An error occurred during translation: {e}")
-            return result, False
+            return result['text'], False
 
-        return result, True
+        return result['text'], True
